@@ -1,5 +1,5 @@
 # 1. Use an official Python base image with slim variant to reduce image size
-FROM python:3.10
+FROM mcr.microsoft.com/devcontainers/python:3.10
 
 # 2. Set environment variables
 ENV PYTHONUNBUFFERED=1 \
@@ -22,7 +22,9 @@ COPY . /youtu_graphrag/
 RUN chmod +x start.sh
 
 # 7. Setup environment. If using Chinese mode, the corresponding Chinese database should be used here.
-RUN pip install -r requirements.txt && python -m spacy download en_core_web_lg
+RUN pip install -r requirements.txt
+# RUN python -m spacy download en_core_web_lg
+RUN python -m spacy download zh_core_web_lg
 
 # 8. Expose application port
 EXPOSE 8000
