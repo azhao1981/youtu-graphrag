@@ -1,6 +1,6 @@
 *.tar.gz
 .*
-CLAUDE.md
+
 */__pycache__/
 *.py[oc]
 build/
