@@ -1351,7 +1351,7 @@
                 showMessage('Starting graph construction...', 'info');
                 
                 // 建立WebSocket连接来接收实时进展
-                const ws = new WebSocket(`ws://${window.location.host}/ws/web_client`);
+                const ws = new WebSocket(`wss://${window.location.host}/ws/web_client`);
                 let progressMessages = [];
                 
                 ws.onopen = function() {
@@ -1416,7 +1416,7 @@
                 showMessage('Reconstructing graph...', 'info');
                 
                 // Open WebSocket for real-time progress
-                const ws = new WebSocket(`ws://${window.location.host}/ws/web_client`);
+                const ws = new WebSocket(`wss://${window.location.host}/ws/web_client`);
                 let progressMessages = [];
                 
                 ws.onopen = function() {
