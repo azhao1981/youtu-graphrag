@@ -1,9 +1,7 @@
 # 1. Use an official Python base image with slim variant to reduce image size
 FROM mcr.microsoft.com/devcontainers/python:3.10
 SHELL ["/bin/bash", "-c"]
-RUN sed -i 's|http://deb.debian.org/debian|https://mirrors.cloud.tencent.com/debian|g' /etc/apt/sources.list && \
-    sed -i 's|http://security.debian.org/debian-security|https://mirrors.cloud.tencent.com/debian-security|g' /etc/apt/sources.list && \
-    sed -i 's|http://deb.debian.org/debian|https://mirrors.cloud.tencent.com/debian|g' /etc/apt/sources.list.d/*
+RUN sed -i 's|http://deb.debian.org/debian|https://mirrors.cloud.tencent.com/debian|g' /etc/apt/sources.list.d/*
 
 # 2. Set environment variables
 ENV PYTHONUNBUFFERED=1 \
