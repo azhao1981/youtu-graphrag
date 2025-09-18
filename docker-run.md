@@ -10,7 +10,10 @@ sudo docker build -f Dockerfile.base -t youtu-graphrag-base:latest .
 ### 2. 构建应用镜像
 ```bash
 sudo docker build -f Dockerfile.app -t youtu-graphrag:latest .
+
+sudo docker build -t youtu-graphrag:prod -f Dockerfile.prod .
 ```
+
 
 ### 3. 运行容器
 ```bash

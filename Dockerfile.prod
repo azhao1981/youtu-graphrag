@@ -1,0 +1,27 @@
+FROM youtu-graphrag:latest as builder
+
+FROM python:3.10-slim
+
+# 复制虚拟环境（清理缓存文件）
+COPY --from=builder /youtu_graphrag/.venv /app/.venv
+RUN find /app/.venv -name "__pycache__" -type d -exec rm -rf {} + && \
+    find /app/.venv -name "*.pyc" -delete && \
+    find /app/.venv -name "*.pyo" -delete
+
+# 精确复制必需的应用文件
+COPY --from=builder /youtu_graphrag/backend.py /app/
+COPY --from=builder /youtu_graphrag/main.py /app/
+COPY --from=builder /youtu_graphrag/config/ /app/config/
+COPY --from=builder /youtu_graphrag/models/ /app/models/
+COPY --from=builder /youtu_graphrag/utils/ /app/utils/
+COPY --from=builder /youtu_graphrag/schemas/ /app/schemas/
+
+# 设置工作目录和环境变量
+WORKDIR /app
+ENV PATH="/app/.venv/bin:$PATH"
+
+# 暴露端口
+EXPOSE 8000
+
+# 启动命令
+CMD ["python", "-m", "uvicorn", "backend:app", "--host", "0.0.0.0", "--port", "8000"]
