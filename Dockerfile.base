@@ -1,0 +1,29 @@
+FROM mcr.microsoft.com/devcontainers/python:3.10
+SHELL ["/bin/bash", "-c"]
+
+# 中国网络优化：配置腾讯云Debian镜像源
+RUN sed -i 's|http://deb.debian.org/debian|https://mirrors.cloud.tencent.com/debian|g' /etc/apt/sources.list.d/*
+
+# 安装系统依赖
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends git && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# 设置环境变量
+ENV PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# 安装uv并配置腾讯云PyPI镜像源
+RUN pip install uv
+RUN uv config set install.index-url https://mirrors.cloud.tencent.com/pypi/simple
+
+# 设置工作目录
+WORKDIR /youtu_graphrag
+
+# 创建uv虚拟环境并安装依赖
+RUN uv venv .venv --python 3.10
+ENV PATH="/youtu_graphrag/.venv/bin:$PATH"
+COPY requirements.txt .
+RUN uv pip install -r requirements.txt
