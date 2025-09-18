@@ -29,7 +29,7 @@ RUN pip config set global.trusted-host mirrors.cloud.tencent.com
 RUN pip install uv
 RUN uv venv && source .venv/bin/activate
 RUN uv pip install -r requirements.txt
-RUN uv pip install ./zh_core_web_lg-3.8.0.tar.gz
+RUN uv pip install ./zh_core_web_lg-3.8.0.tar.gz -i https://mirrors.cloud.tencent.com/pypi/simple
 
 # 8. Expose application port
 EXPOSE 8000
