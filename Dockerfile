@@ -1,5 +1,9 @@
 # 1. Use an official Python base image with slim variant to reduce image size
 FROM mcr.microsoft.com/devcontainers/python:3.10
+SHELL ["/bin/bash", "-c"]
+RUN sed -i 's|http://deb.debian.org/debian|https://mirrors.cloud.tencent.com/debian|g' /etc/apt/sources.list && \
+    sed -i 's|http://security.debian.org/debian-security|https://mirrors.cloud.tencent.com/debian-security|g' /etc/apt/sources.list && \
+    sed -i 's|http://deb.debian.org/debian|https://mirrors.cloud.tencent.com/debian|g' /etc/apt/sources.list.d/*
 
 # 2. Set environment variables
 ENV PYTHONUNBUFFERED=1 \
@@ -22,9 +26,12 @@ COPY . /youtu_graphrag/
 RUN chmod +x start.sh
 
 # 7. Setup environment. If using Chinese mode, the corresponding Chinese database should be used here.
-RUN pip install -r requirements.txt
-# RUN python -m spacy download en_core_web_lg
-RUN python -m spacy download zh_core_web_lg
+RUN pip config set global.index-url https://mirrors.cloud.tencent.com/pypi/simple
+RUN pip config set global.trusted-host mirrors.cloud.tencent.com
+RUN pip install uv
+RUN uv venv && source .venv/bin/activate
+RUN uv pip install -r requirements.txt
+RUN uv pip install ./zh_core_web_lg-3.8.0.tar.gz
 
 # 8. Expose application port
 EXPOSE 8000
